@@ -1,0 +1,22 @@
+td {
+	width: 20px;
+	height: 20px;
+	background-color: #fff;
+	border: solid 3px #eee;
+	text-align: center;
+}
+
+.bomb {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background-color: #aa0000;
+	border: solid 5px #fff;
+}
+
+.open {
+	border: solid 3px #fff;
+}
+
+.number {
+}
