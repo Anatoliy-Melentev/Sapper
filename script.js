@@ -12,8 +12,6 @@ board.table.addEventListener('click', ({target}) => {
       return;
     }
 
-    curPoint.openField();
-
     if (first) {
       first = false;
       board.generateMinefield(+target.dataset.id);
@@ -35,6 +33,8 @@ board.table.addEventListener('click', ({target}) => {
       });
     }
 
+    curPoint.openField();
+
     if (curPoint.isBomb()) {
       alert('Gameover')
     }
@@ -49,26 +49,29 @@ board.table.addEventListener('click', ({target}) => {
         let
           curId = emptyMates.shift(),
           curMate = board.list[curId],
-          curMateMates = curMate.getMates(boardSize);
+          curMateMates = curMate.getMates(boardSize),
+          emptyMateMates = curMateMates.filter(mate => {
+            return board.list[mate].isEmpty() && !board.list[mate].isOpen() && emptyMates.indexOf(mate) === -1;
+          }),
+          countMateMates = curMateMates.filter(mate => {
+              return board.list[mate].isCount() && !board.list[mate].isOpen() && countMates.indexOf(mate) === -1;
+          });
 
         curMate.openField();
-
-        emptyMates = emptyMates.concat(curMateMates.filter(mate => {
-          board.list[mate].isEmpty() &&
-          !board.list[mate].isOpen() &&
-          emptyMates.indexOf(mate) === -1
-        }));
-        debugger;
-        countMates = countMates.concat(curMateMates.filter(mate => {
-          board.list[mate].isCount() &&
-          !board.list[mate].isOpen() &&
-          countMates.indexOf(mate) === -1
-        }));
-
+        emptyMates = [...emptyMates,...emptyMateMates];
+        countMates = [...countMates,...countMateMates];
       }
 
-
-
+      while (countMates.length) {
+        board.list[countMates.shift()].openField();
+      }
     }
+  }
+});
+
+board.table.addEventListener('contextmenu', e => {
+  if (e.target.tagName === 'TD') {
+    e.preventDefault();
+    board.list[+e.target.dataset.id].setFlag();
   }
 });

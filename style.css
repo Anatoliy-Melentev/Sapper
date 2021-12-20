@@ -7,11 +7,25 @@ td {
 }
 
 .bomb {
-	width: 16px;
-	height: 16px;
-	border-radius: 50%;
+	border: solid 3px #fff;
+	position: relative;
+}
+.bomb:after, .bomb:before {
+	content: "";
+	position: absolute;
+	display: block;
+	width: 6px;
+	height: 6px;
 	background-color: #aa0000;
-	border: solid 5px #fff;
+	border: solid 5px transparent;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin:auto;
+}
+.bomb:after{
+	transform: rotate(45deg);
 }
 
 .open {
@@ -19,4 +33,9 @@ td {
 }
 
 .number {
+}
+
+.flag {
+	border: solid 3px #a00;
+	border-radius: 50%;
 }

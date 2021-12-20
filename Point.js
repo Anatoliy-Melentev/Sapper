@@ -3,6 +3,7 @@ class Point {
     this.coords = coords;
     this.bomb = false;
     this.open = false;
+    this.flag = false;
     this.count = 0;
     this.mates = [];
   }
@@ -20,16 +21,27 @@ class Point {
   }
   plantBomb() {
     this.bomb = true;
-    this.getField().classList.add('bomb');
   }
   openField(){
     this.open = true;
     this.getField().classList.add('open');
+
+    if (this.isCount()) {
+      this.getField().innerHTML = this.count;
+      this.getField().classList.add('number');
+    }
+    if (this.isBomb()) {
+      this.getField().classList.add('bomb');
+    }
   }
   setCount(count){
     this.count = count;
-    this.getField().innerHTML = count;
-    this.getField().classList.add('number');
+  }
+  setFlag(){
+    if (!this.isOpen()) {
+      this.flag = !this.flag;
+      this.getField().classList.toggle('flag');
+    }
   }
   getField() {
     return document.querySelector(`[data-x='${this.coords[0]}'][data-y='${this.coords[1]}']`);
