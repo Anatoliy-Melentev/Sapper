@@ -1,10 +1,11 @@
 class Board {
-  constructor([offsetX, offsetY], bombCount) {
-    this.rowsCount = offsetX;
-    this.colsCount = offsetY;
+  constructor([offsetX, offsetY, bombCount]) {
+    this.rowsCount = offsetY || 10;
+    this.colsCount = offsetX || 10;
     this.bombCount = bombCount || ((offsetX + offsetX) / 2);
     this.list = [];
-    this.game = document.querySelector('body');
+    this.game = document.querySelector('div.game__board');
+    this.gameOver = document.querySelector('div.game__over');
     this.bombList = [];
 
     this.generateBoard();
@@ -45,5 +46,26 @@ class Board {
     }
 
     return this.bombList;
+  }
+  getBombs () {
+    return this.bombList;
+  }
+  createMsg(text, over) {
+    this.gameOver.innerHTML = text;
+    this.gameOver.style.display = 'block';
+    if (over) {
+      this.gameOver.style.backgroundColor = 'red';
+    }
+  }
+  reCreateBoard([offsetX, offsetY, bombCount]) {
+    this.list = [];
+    this.rowsCount = offsetX || 10;
+    this.colsCount = offsetY || 10;
+    this.bombCount = bombCount || ((offsetX + offsetX) / 2);
+    this.table.remove();
+    this.gameOver.style.display = 'none';
+    this.gameOver.style.backgroundColor = 'white';
+
+    this.generateBoard();
   }
 };

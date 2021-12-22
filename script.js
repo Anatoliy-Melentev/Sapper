@@ -1,10 +1,27 @@
 const
-  boardSize = [10, 10],
-  board = new Board(boardSize, 10);
+  boardSize = [10, 10, 12],
+  board = new Board(boardSize),
+  reload = document.querySelector('.scored__reload'),
+  offsetX = document.querySelector('.scored__offsetX'),
+  offsetY = document.querySelector('.scored__offsetY'),
+  bombCount = document.querySelector('.scored__bombs');
+
+offsetX.value = boardSize[0];
+offsetY.value = boardSize[1];
+bombCount.value = boardSize[2];
 
 let first = true;
 
-board.table.addEventListener('click', ({target}) => {
+reload.addEventListener('click', () => {
+  board.reCreateBoard([
+    offsetX.value >= 5 && offsetX.value <= 30 ? +offsetX.value : boardSize[0],
+    offsetY.value >= 5 && offsetY.value <= 30 ? +offsetY.value : boardSize[1],
+    bombCount.value >= 5 && bombCount.value <= 30 ? +bombCount.value : boardSize[2],
+  ], 15);
+  first = true;
+});
+
+board.game.addEventListener('click', ({target}) => {
   if (target.tagName === 'TD') {
     let curPoint = board.list[+target.dataset.id];
 
@@ -36,7 +53,11 @@ board.table.addEventListener('click', ({target}) => {
     curPoint.openField();
 
     if (curPoint.isBomb()) {
-      alert('Gameover')
+      board.createMsg('Game Over!', true);
+      let bombs = board.getBombs();
+      bombs.forEach(bomb => {
+        board.list[bomb].openField();
+      });
     }
 
     if (curPoint.isEmpty()) {
@@ -54,7 +75,7 @@ board.table.addEventListener('click', ({target}) => {
             return board.list[mate].isEmpty() && !board.list[mate].isOpen() && emptyMates.indexOf(mate) === -1;
           }),
           countMateMates = curMateMates.filter(mate => {
-              return board.list[mate].isCount() && !board.list[mate].isOpen() && countMates.indexOf(mate) === -1;
+            return board.list[mate].isCount() && !board.list[mate].isOpen() && countMates.indexOf(mate) === -1;
           });
 
         curMate.openField();
@@ -69,7 +90,7 @@ board.table.addEventListener('click', ({target}) => {
   }
 });
 
-board.table.addEventListener('contextmenu', e => {
+board.game.addEventListener('contextmenu', e => {
   if (e.target.tagName === 'TD') {
     e.preventDefault();
     board.list[+e.target.dataset.id].setFlag();

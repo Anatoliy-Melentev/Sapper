@@ -9,6 +9,27 @@
 	<script src="script.js" defer></script>
 </head>
 <body>
-	<table></table>
+	<div class="scored">
+		<button type="button" class="scored__reload">reload</button>
+		<form action="#" oninput="offXResult.value = offX.value">
+			<label for="offX">Ширина поля: </label>
+			<input id="offX" name="offX" type="range" min="5" max="30" step="1" class="scored__offsetX">
+			<output name="offXResult">10</output>
+		</form>
+		<form action="#" oninput="offYResult.value = offY.value">
+			<label for="offY">Высота поля: </label>
+			<input id="offY" type="range" min="5" max="30" step="1" class="scored__offsetY">
+			<output name="offYResult">10</output>
+		</form>
+		<form action="#" oninput="BombsResult.value = Bombs.value">
+			<label for="Bombs">Количество бомб: </label>
+			<input id="Bombs" type="range" min="5" max="30" step="1" class="scored__bombs">
+			<output name="BombsResult">12</output>
+		</form>
+	</div>
+	<div class="game">
+		<div class="game__board"></div>
+		<div class="game__over"></div>
+	</div>
 </body>
 </html>
