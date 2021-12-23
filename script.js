@@ -1,25 +1,13 @@
+
+
 const
-  boardSize = [10, 10, 12],
-  board = new Board(boardSize),
-  reload = document.querySelector('.scored__reload'),
-  offsetX = document.querySelector('.scored__offsetX'),
-  offsetY = document.querySelector('.scored__offsetY'),
-  bombCount = document.querySelector('.scored__bombs');
+  getEl = id => { return document.getElementById(id) },
+  board = new Board();
 
-offsetX.value = boardSize[0];
-offsetY.value = boardSize[1];
-bombCount.value = boardSize[2];
-
-let first = true;
-
-reload.addEventListener('click', () => {
-  board.reCreateBoard([
-    offsetX.value >= 5 && offsetX.value <= 30 ? +offsetX.value : boardSize[0],
-    offsetY.value >= 5 && offsetY.value <= 30 ? +offsetY.value : boardSize[1],
-    bombCount.value >= 5 && bombCount.value <= 30 ? +bombCount.value : boardSize[2],
-  ], 15);
-  first = true;
-});
+getEl('reload').addEventListener('click', () => board.reCreateBoard());
+getEl('bombs').addEventListener('input', () => board.reCreateBoard());
+getEl('offx').addEventListener('input', () => board.reCreateBoard());
+getEl('offy').addEventListener('input', () => board.reCreateBoard());
 
 board.game.addEventListener('click', ({target}) => {
   if (target.tagName === 'TD') {
@@ -29,25 +17,9 @@ board.game.addEventListener('click', ({target}) => {
       return;
     }
 
-    if (first) {
-      first = false;
+    if (board.getStart()) {
+      board.setStart(false);
       board.generateMinefield(+target.dataset.id);
-
-      board.list.forEach(field => {
-        let mates = field.getMates(boardSize);
-
-        let count = mates.reduce((sum, mate) => {
-          if (board.list[mate].isBomb()) {
-            sum++;
-          }
-
-          return sum;
-        }, 0);
-
-        if (!field.isBomb() && count > 0) {
-          field.setCount(count);
-        }
-      });
     }
 
     curPoint.openField();
@@ -62,7 +34,7 @@ board.game.addEventListener('click', ({target}) => {
 
     if (curPoint.isEmpty()) {
       let
-        closeMates = curPoint.getMates(boardSize),
+        closeMates = curPoint.getMates([board.colsCount, board.rowsCount]),
         emptyMates = closeMates.filter(mate => board.list[mate].isEmpty()),
         countMates = closeMates.filter(mate => board.list[mate].isCount());
 
@@ -70,7 +42,7 @@ board.game.addEventListener('click', ({target}) => {
         let
           curId = emptyMates.shift(),
           curMate = board.list[curId],
-          curMateMates = curMate.getMates(boardSize),
+          curMateMates = curMate.getMates([board.colsCount, board.rowsCount]),
           emptyMateMates = curMateMates.filter(mate => {
             return board.list[mate].isEmpty() && !board.list[mate].isOpen() && emptyMates.indexOf(mate) === -1;
           }),

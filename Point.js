@@ -5,7 +5,6 @@ class Point {
     this.open = false;
     this.flag = false;
     this.count = 0;
-    this.mates = [];
   }
   isOpen() {
     return this.open;
@@ -15,12 +14,13 @@ class Point {
   }
   isCount() {
     return !this.isBomb() && this.count > 0;
+    this.getField().classList.add('number');
   }
   isEmpty() {
     return !this.isBomb() && this.count === 0;
   }
   plantBomb() {
-    this.bomb = true;
+    this.bomb = true; this.getField().classList.add('bomb');
   }
   openField(){
     this.open = true;
@@ -56,7 +56,7 @@ class Point {
       bottom = this.coords[1] + 1,
       left = this.coords[0] - 1,
       rigth = this.coords[0] + 1;
-
+debugger;
     if (top >= 0 && left >= 0) {
       mates.push(this.getFieldByCoords([left, top]).dataset.id);
     }

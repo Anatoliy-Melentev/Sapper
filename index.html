@@ -10,26 +10,26 @@
 </head>
 <body>
 	<div class="scored">
-		<button type="button" class="scored__reload">reload</button>
-		<form action="#" oninput="offXResult.value = offX.value">
-			<label for="offX">Ширина поля: </label>
-			<input id="offX" name="offX" type="range" min="5" max="30" step="1" class="scored__offsetX">
+		<button type="button" id="reload" class="scored__reload">reload</button>
+		<form action="#" oninput="offXResult.value = offx.value">
+			<label for="offx">Ширина поля: </label>
+			<input id="offx" name="offx" type="range" min="5" max="30" step="1" value="10" class="scored__offsetX">
 			<output name="offXResult">10</output>
 		</form>
-		<form action="#" oninput="offYResult.value = offY.value">
-			<label for="offY">Высота поля: </label>
-			<input id="offY" type="range" min="5" max="30" step="1" class="scored__offsetY">
+		<form action="#" oninput="offYResult.value = offy.value">
+			<label for="offy">Высота поля: </label>
+			<input id="offy" name="offy" type="range" min="5" max="30" step="1" value="10" class="scored__offsetY">
 			<output name="offYResult">10</output>
 		</form>
-		<form action="#" oninput="BombsResult.value = Bombs.value">
-			<label for="Bombs">Количество бомб: </label>
-			<input id="Bombs" type="range" min="5" max="30" step="1" class="scored__bombs">
+		<form action="#" oninput="BombsResult.value = bombs.value">
+			<label for="bombs">Количество бомб: </label>
+			<input id="bombs" name="bombs" type="range" min="5" max="30" step="1" value="12" class="scored__bombs">
 			<output name="BombsResult">12</output>
 		</form>
 	</div>
 	<div class="game">
-		<div class="game__board"></div>
-		<div class="game__over"></div>
+		<div id="board" class="game__board"></div>
+		<div id="gameover" class="game__over"></div>
 	</div>
 </body>
 </html>

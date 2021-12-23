@@ -1,14 +1,41 @@
 class Board {
-  constructor([offsetX, offsetY, bombCount]) {
-    this.rowsCount = offsetY || 10;
-    this.colsCount = offsetX || 10;
-    this.bombCount = bombCount || ((offsetX + offsetX) / 2);
+  constructor() {
+    this.start = true;
+    this.colsCount = this.getOffsetX();
+    this.rowsCount = this.getOffsetY();
+    this.bombCount = this.getBombsCount();
     this.list = [];
-    this.game = document.querySelector('div.game__board');
-    this.gameOver = document.querySelector('div.game__over');
+    this.game = this.getEl('board');
+    this.gameOver = this.getEl('gameover');
     this.bombList = [];
 
     this.generateBoard();
+  }
+  getStart() {
+    return this.start;
+  }
+  setStart(start) {
+    this.start = start;
+  }
+  getOffsetX(){
+    return this.getValue('offx', 10);
+  }
+  getOffsetY(){
+    return this.getValue('offy', 10);
+  }
+  getBombsCount(){
+    return this.getValue('bombs', (this.getOffsetX() + this.getOffsetY()) * 0.6);
+  }
+  getValue(name, defaultValue) {
+    const
+      el = this.getEl(name),
+      min = +el.getAttribute('min'),
+      max = +el.getAttribute('max');
+
+    return +el.value >= min && +el.value <= max ? +el.value : defaultValue;
+  }
+  getEl(id) {
+    return document.getElementById(id);
   }
   generateBoard() {
     let tr, td, count = 0;
@@ -35,6 +62,7 @@ class Board {
   }
   generateMinefield(curFieldId) {
     let bombId;
+    this.bombList = [];
     this.bombList.push(curFieldId);
     while (this.bombList.length <= this.bombCount) {
       bombId = this.getRandomInt(this.rowsCount * this.colsCount);
@@ -45,7 +73,24 @@ class Board {
       }
     }
 
-    return this.bombList;
+    this.generateNumberfield()
+  }
+  generateNumberfield() {
+    this.list.forEach(field => {
+      let mates = field.getMates([this.colsCount, this.rowsCount]);
+
+      let count = mates.reduce((sum, mate) => {
+        if (board.list[mate].isBomb()) {
+          sum++;
+        }
+
+        return sum;
+      }, 0);
+
+      if (!field.isBomb() && count > 0) {
+        field.setCount(count);
+      }
+    });
   }
   getBombs () {
     return this.bombList;
@@ -57,11 +102,12 @@ class Board {
       this.gameOver.style.backgroundColor = 'red';
     }
   }
-  reCreateBoard([offsetX, offsetY, bombCount]) {
+  reCreateBoard() {
     this.list = [];
-    this.rowsCount = offsetX || 10;
-    this.colsCount = offsetY || 10;
-    this.bombCount = bombCount || ((offsetX + offsetX) / 2);
+    this.start = true;
+    this.colsCount = this.getOffsetX();
+    this.rowsCount = this.getOffsetY();
+    this.bombCount = this.getBombsCount();
     this.table.remove();
     this.gameOver.style.display = 'none';
     this.gameOver.style.backgroundColor = 'white';
