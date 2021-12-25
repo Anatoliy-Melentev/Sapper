@@ -1,17 +1,19 @@
-
-
 const
   getEl = id => { return document.getElementById(id) },
-  board = new Board();
-
-getEl('reload').addEventListener('click', () => board.reCreateBoard());
-getEl('bombs').addEventListener('input', () => board.reCreateBoard());
-getEl('offx').addEventListener('input', () => board.reCreateBoard());
-getEl('offy').addEventListener('input', () => board.reCreateBoard());
-
-board.game.addEventListener('click', ({target}) => {
-  if (target.tagName === 'TD') {
-    let curPoint = board.list[+target.dataset.id];
+  reloadEl = getEl('reload'),
+  board = new Board(),
+  setFlag = e => {
+    if (e.target.tagName !== 'TD') {
+      return;
+    }
+    e.preventDefault();
+    board.list[+e.target.dataset.id].setFlag();
+  },
+  openField = e => {
+    if (e.target.tagName !== 'TD') {
+      return;
+    }
+    const curPoint = board.list[+e.target.dataset.id];
 
     if (curPoint.isOpen()) {
       return;
@@ -19,17 +21,14 @@ board.game.addEventListener('click', ({target}) => {
 
     if (board.getStart()) {
       board.setStart(false);
-      board.generateMinefield(+target.dataset.id);
+      board.generateMinefield(+e.target.dataset.id);
     }
 
     curPoint.openField();
 
     if (curPoint.isBomb()) {
       board.createMsg('Game Over!', true);
-      let bombs = board.getBombs();
-      bombs.forEach(bomb => {
-        board.list[bomb].openField();
-      });
+      board.getBombs().forEach(bomb => board.list[bomb].openField());
     }
 
     if (curPoint.isEmpty()) {
@@ -59,12 +58,25 @@ board.game.addEventListener('click', ({target}) => {
         board.list[countMates.shift()].openField();
       }
     }
-  }
-});
+    if (board.checkWin()) {
+      board.createMsg('You are champion!');
+    }
+  };
 
-board.game.addEventListener('contextmenu', e => {
-  if (e.target.tagName === 'TD') {
-    e.preventDefault();
-    board.list[+e.target.dataset.id].setFlag();
-  }
-});
+reloadEl.addEventListener('click', () => board.reCreateBoard());
+getEl('bombs').addEventListener('input', () => board.reCreateBoard());
+getEl('offx').addEventListener('input', () => board.reCreateBoard());
+getEl('offy').addEventListener('input', () => board.reCreateBoard());
+getEl('tools').addEventListener('click', () => getEl('toolsmenu').classList.toggle('visually-hidden'));
+
+board.game.addEventListener('click', e => openField(e));
+board.game.addEventListener('contextmenu', e => setFlag(e));
+
+let time;
+reloadEl.addEventListener('touchstart', e => {
+  time = setTimeout(() => openField(e), 500);
+})
+reloadEl.addEventListener('touchend', e => {
+  clearTimeout(time);
+  setFlag(e);
+})

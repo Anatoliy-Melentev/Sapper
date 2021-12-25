@@ -1,10 +1,10 @@
 class Board {
   constructor() {
     this.start = true;
+    this.list = [];
     this.colsCount = this.getOffsetX();
     this.rowsCount = this.getOffsetY();
     this.bombCount = this.getBombsCount();
-    this.list = [];
     this.game = this.getEl('board');
     this.gameOver = this.getEl('gameover');
     this.bombList = [];
@@ -24,7 +24,7 @@ class Board {
     return this.getValue('offy', 10);
   }
   getBombsCount(){
-    return this.getValue('bombs', (this.getOffsetX() + this.getOffsetY()) * 0.6);
+    return this.getValue('bombs', (this.getOffsetX() + this.getOffsetY()) * 0.7);
   }
   getValue(name, defaultValue) {
     const
@@ -77,15 +77,13 @@ class Board {
   }
   generateNumberfield() {
     this.list.forEach(field => {
-      let mates = field.getMates([this.colsCount, this.rowsCount]);
+      let
+        mates = field.getMates([this.colsCount, this.rowsCount]),
+        count = mates.reduce((sum, mate) => {
+          if (board.list[mate].isBomb()) sum++;
 
-      let count = mates.reduce((sum, mate) => {
-        if (board.list[mate].isBomb()) {
-          sum++;
-        }
-
-        return sum;
-      }, 0);
+          return sum;
+        }, 0);
 
       if (!field.isBomb() && count > 0) {
         field.setCount(count);
@@ -94,6 +92,12 @@ class Board {
   }
   getBombs () {
     return this.bombList;
+  }
+  checkWin() {
+    let emptyClose = this.list.findIndex(el => {
+      return !el.isBomb() && !el.isOpen();
+    })
+    return emptyClose < 0;
   }
   createMsg(text, over) {
     this.gameOver.innerHTML = text;

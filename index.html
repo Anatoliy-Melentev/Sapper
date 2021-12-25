@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Сапер</title>
 	<link rel="stylesheet" href="style.css">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1.0">
 	<script src="Point.js" defer></script>
 	<script src="Board.js" defer></script>
 	<script src="script.js" defer></script>
@@ -11,25 +12,28 @@
 <body>
 	<div class="scored">
 		<button type="button" id="reload" class="scored__reload">reload</button>
-		<form action="#" oninput="offXResult.value = offx.value">
-			<label for="offx">Ширина поля: </label>
-			<input id="offx" name="offx" type="range" min="5" max="30" step="1" value="10" class="scored__offsetX">
-			<output name="offXResult">10</output>
-		</form>
-		<form action="#" oninput="offYResult.value = offy.value">
-			<label for="offy">Высота поля: </label>
-			<input id="offy" name="offy" type="range" min="5" max="30" step="1" value="10" class="scored__offsetY">
-			<output name="offYResult">10</output>
-		</form>
-		<form action="#" oninput="BombsResult.value = bombs.value">
-			<label for="bombs">Количество бомб: </label>
-			<input id="bombs" name="bombs" type="range" min="5" max="30" step="1" value="12" class="scored__bombs">
-			<output name="BombsResult">12</output>
-		</form>
+		<button type="button" id="tools" class="scored__tools">tools</button>
+		<div id="toolsmenu" class="visually-hidden">
+			<form action="#" oninput="offXResult.value = offx.value">
+				<label for="offx">Ширина поля: </label>
+				<input id="offx" name="offx" type="range" min="5" max="30" step="1" value="10" class="scored__offsetX">
+				<output name="offXResult">10</output>
+			</form>
+			<form action="#" oninput="offYResult.value = offy.value">
+				<label for="offy">Высота поля: </label>
+				<input id="offy" name="offy" type="range" min="5" max="30" step="1" value="10" class="scored__offsetY">
+				<output name="offYResult">10</output>
+			</form>
+			<form action="#" oninput="BombsResult.value = bombs.value">
+				<label for="bombs">Количество бомб: </label>
+				<input id="bombs" name="bombs" type="range" min="5" max="30" step="1" value="14" class="scored__bombs">
+				<output name="BombsResult">14</output>
+			</form>
+		</div>
 	</div>
 	<div class="game">
 		<div id="board" class="game__board"></div>
-		<div id="gameover" class="game__over"></div>
+		<div id="gameover" class="game__over">Game over</div>
 	</div>
 </body>
 </html>

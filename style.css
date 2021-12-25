@@ -5,12 +5,13 @@ body {
 	flex-direction: column;
 }
 td {
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
 	background-color: #fff;
 	border: solid 3px #eee;
 	text-align: center;
 	margin: 3px;
+	font-weight: bold;
 }
 
 .bomb {
@@ -21,8 +22,8 @@ td {
 	content: "";
 	position: absolute;
 	display: block;
-	width: 6px;
-	height: 6px;
+	width: 8px;
+	height: 8px;
 	background-color: #aa0000;
 	border: solid 5px transparent;
 	top: 0;
@@ -40,11 +41,52 @@ td {
 }
 
 .number {
+
+}
+.c1 {
+	color: #0046fe;
+}
+.c2 {
+	color: #4700a9
+}
+.c3{
+	color: #9e00b5
+}
+.c4 {
+	color: #c5144a
+}
+.c5 {
+	color: #ff2108
+}
+.c6 {
+	color: #fe5200
+}
+.c7 {
+	color: #fe9900
+}
+.c8 {
+	color: #f8c002
 }
 
 .flag {
-	border: solid 3px #a00;
-	border-radius: 50%;
+	border: solid 3px #eee;
+	position: relative;
+}
+.flag:before, .flag:after {
+	content: "";
+	display: block;
+	width: 26px;
+	height: 4px;
+	background-color: #000;
+	position: absolute;
+	margin: auto;
+	top: 0; right: 0; left: 0; bottom: 0;
+}
+.flag:after {
+	transform: rotate(45deg);
+}
+.flag:before {
+	transform: rotate(-45deg);
 }
 
 .game {
@@ -58,16 +100,16 @@ td {
 	width: 100%;
 	height: 100%;
 	background-color: white;
-	position: absolute;
+	color: black;
 	top: 0;
-	left: -2px;
+	position: absolute;
+	padding-top: 50px;
 	text-align: center;
-	padding: 50px;
 	box-sizing: border-box;
 	font-size: 30px;
 	justify-content: center;
 	align-items: center;
-	opacity: 0.3;
+	opacity: 0.5;
 	display: none;
 }
 
@@ -84,7 +126,7 @@ output {
 	color: white;
 }
 
-.scored__reload, input {
+.scored__reload, .scored__tools, input {
 	max-width: 290px;
 	display: inline-block;
 	min-width: 102px;
@@ -97,15 +139,15 @@ output {
 	margin: 2px;
 }
 
-button.scored__reload {
-	background-color: white;
+button.scored__reload, .scored__tools {
+	color: white;
 }
 
 .scored {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 60px;
+	flex-wrap: wrap;
 	width: 100%;
 	background-color: black;
 	vertical-align: middle;
@@ -114,4 +156,15 @@ button.scored__reload {
 label {
 	color: white;
 	margin-left: 10px;
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	border: 0;
+	clip: rect(0 0 0 0);
 }
